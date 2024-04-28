@@ -5,11 +5,10 @@ async function getItems() {
             method: 'GET'
         }
     );
-
     return response.json();
 }
 async function createItem() {
-    let title = document.getElementById("title").value;
+    let newItemTitle = document.getElementById("title").value;
     let response = await fetch("/item", {
         method: 'POST',
         headers: {
@@ -17,7 +16,7 @@ async function createItem() {
         },
         body: JSON.stringify(
             {
-            name: title
+            title: newItemTitle
             }
         )
     });
@@ -40,27 +39,22 @@ function display(items) {
     let table = document.getElementById("items");
     table.innerHTML = "";
     for (let i = 0; i < items.length; i++) {
-        let item = items[i];
-        console.log(item)
+/*        let item = items[i];*/
         let row = document.createElement("li");
-        row.appendChild(document.createTextNode(item.title));
-
+        row.appendChild(document.createTextNode(JSON.parse( items[i].title).title));
         let btn = document.createElement("button");
         btn.appendChild(document.createTextNode("remove"));
         btn.onclick = function() {
-            remove(item.id);
+            remove(items[i].id);
         };
         row.appendChild(btn);
-
         let checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-
-        checkbox.checked = item.bought;
+        checkbox.checked = items[i].bought;
         checkbox.onclick = function() {
-            buyItemById(item.id);
+            buyItemById(items[i].id);
         };
         row.insertBefore(checkbox, row.firstChild);
-
         table.appendChild(row);
     }
 }
